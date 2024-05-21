@@ -1,0 +1,5 @@
+SELECT date_format(DATETIME, "%H") AS HOUR, COUNT(*) 
+FROM ANIMAL_OUTS
+WHERE date_format(DATETIME, "%H:%i") between '09:00' and '19:59'
+GROUP BY HOUR
+ORDER BY HOUR;
