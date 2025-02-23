@@ -6,35 +6,39 @@ import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-        
-        int N = Integer.parseInt(bf.readLine()); // 배열의 크기
-        int M = Integer.parseInt(bf.readLine()); // 목표 합
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int[] A = new int[N]; // 배열 A
-        StringTokenizer st = new StringTokenizer(bf.readLine());
-        for (int i = 0; i < N; i++) {
-            A[i] = Integer.parseInt(st.nextToken());
+        StringTokenizer st = new StringTokenizer(br.readLine()); // 1번째 줄 읽음
+        int N = Integer.parseInt(st.nextToken()); // 재료의 개수
+
+        st = new StringTokenizer(br.readLine()); // 2번째 줄 읽음
+        int M = Integer.parseInt(st.nextToken()); // 옷이 완성되는 번호의 합
+
+        st = new StringTokenizer(br.readLine()); // 3번째 줄 읽음
+        int[] arr = new int[N]; // 크기N의 배열선언
+
+        for(int i=0; i<N; i++){
+            arr[i] = Integer.parseInt(st.nextToken()); // 배열에 재료 고유번호 담음
         }
-        Arrays.sort(A); // 배열 오름차 순 정렬
-        
-        int count = 0;
-        int i = 0; // A[0] => min 값
-        int j = N - 1; // A[N-1] => max 값
 
-        while(i < j) {
-            if (A[i] + A[j] < M) {
-                i++; // min 값 i 한칸 이동
-            } else if (A[i] + A[j] > M) {
-                j--; // max 값 j 한칸 이동
-            } else {
-                count++; // count 값 증가
-                i++; // 한번 사용한 값 필요없으므로 투 포인터 값 이동
-                j--;
+        Arrays.sort(arr); // 배열 오름차순 정렬
+        int start = 0; // 첫번째 index
+        int end = N-1; // 마지막 index
+        int count = 0; // 카운트 값
+
+        while (start < end){
+            if(arr[start] + arr[end] < M){
+                start++;
+            } else if (arr[start] + arr[end] == M) {
+                count++;
+                start++;
+                end--;
+            } else{
+                // arr[start] + arr[end] > M
+                end--;
             }
         }
-        
+
         System.out.println(count);
-        bf.close();
     }
 }
