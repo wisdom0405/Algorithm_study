@@ -3,50 +3,40 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
-    static int N;
-
-    public static void main (String[] args)throws IOException {
+    public static void main (String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        N = Integer.parseInt(br.readLine()); // N 자리 수
+        int N = Integer.parseInt(br.readLine());
 
-        // 맨 앞자리는 반드시 소수여야 한다. (1은 소수가 아니므로 2,3,5,7 중 하나)
-        // 그 다음 자리부터는 1,3,7,9 중 하나씩 추가 
-        DFS(2,1);
-        DFS(3,1);
-        DFS(5,1);
-        DFS(7,1);
-    }
-
-    public static void DFS(int number, int jarisu){
-        if(jarisu == N){
-            if(isPrime(number)){
-                System.out.println(number); // 자리수가 N을 만족 & 소수라면 출력
-            }
+        DFS(2,1, N);
+        DFS(3,1, N);
+        DFS(5,1, N);
+        DFS(7,1, N);
+    }   
+    // DFS
+    public static void DFS(int num, int jarisu, int N){
+        if(jarisu == N && isPrime(num)){
+            System.out.println(num); // N자리수를 만족하고 소수라면 해당 값 출력
         }
 
-        // 그 외에는 계속 DFS 돈다.
-        for(int i=0; i<10; i++){
-            if(i%2 == 0){
-                continue; // 짝수라면 탐색할 필요X
-            }
+        int[] nextPrime = {1,3,7,9}; // 그 다음에 붙을 소수 후보들
 
-            if(isPrime(number * 10 + i)){
-                // 소수라면 다음 DFS 이동
-                DFS(number * 10 + i, jarisu + 1);
+        for(int next : nextPrime){
+            if(isPrime(num * 10 + next)){
+                DFS(num * 10 + next, jarisu + 1, N);
             }
         }
     }
 
-    public static boolean isPrime(int number){
-        if(number < 2) return false; // 1은 소수아님
-        if(number == 2 || number ==3) return true; // 2,3은 소수임
+    // 소수인지 판별하는 함수
+    public static boolean isPrime(int num){
+        // 1은 소수가 아니다.
+        if(num < 2) return false;
 
-        // 그 외 숫자
-        for(int i=2; i <= Math.sqrt(number); i++){ // √number까지 검사
-            if(number % i == 0){
-                return false;
-            }
+        // 그 외 숫자 : 2 ~ sqrt(num)까지 나눠떨어지는 수가 있다면 false
+        for(int i=2; i<Math.sqrt(num); i++){
+            if(num % i == 0) return false;
         }
-        return true; // 루프를 끝까지 돌았다면 소수
+        // for문을 다 순회하는데 성공했다면 소수이다.
+        return true;
     }
 }
