@@ -1,29 +1,27 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args)throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
 
-        ArrayList<String> words = new ArrayList<>();
+        Set<String> wordSet = new HashSet<>();
         for (int i=0; i<N; i++){
-            String word = br.readLine();
-            if (words.contains(word)) continue; // 이미 있는 단어라면 건너뛰기
-
-            words.add(word);
+            wordSet.add(br.readLine());
         }
 
-        words.sort(Comparator.comparingInt(String::length)
-                .thenComparing(w -> w)
+        List<String> words = new ArrayList<>(wordSet);
+        words.sort(Comparator
+                .comparingInt(String::length)
+                .thenComparing(Comparator.naturalOrder())
         );
 
         StringBuilder sb = new StringBuilder();
-        for (int i=0; i<words.size(); i++){
-            sb.append(words.get(i)+"\n");
+        for (String word : words){
+            sb.append(word).append("\n");
         }
         System.out.println(sb);
     }
