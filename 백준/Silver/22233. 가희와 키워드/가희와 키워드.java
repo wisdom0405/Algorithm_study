@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 
@@ -17,13 +15,18 @@ public class Main {
             set.add(br.readLine());
         }
 
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
         while (M-->0){
             st = new StringTokenizer(br.readLine(),","); // ,(쉼표 구분)
             while (st.hasMoreTokens()){
                 String keyword = st.nextToken();
                 set.remove(keyword);
             }
-            System.out.println(set.size());
+            bw.write(set.size() + "\n");
         }
+
+        bw.flush();
+        bw.close();
     }
 }
